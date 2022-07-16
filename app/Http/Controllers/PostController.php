@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Resources\PostResource;
+use App\Models\Post;
 
 class PostController extends Controller
 {
@@ -14,7 +15,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        return PostResource::all();
+        $post = Post::paginate(5);
+        return PostResource::collection($post);
     }
 
     /**
@@ -46,7 +48,8 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
+        $post = Post::findOrFail($id);
+        return new PostResource($post);
     }
 
     /**
