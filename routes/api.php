@@ -3,6 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\PostController;
+use Illuminate\Support\Facades\Log;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,10 +18,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    $filteredUser = [
+        'id' => $request->user()->id,
+        'name' => $request->user()->name
+    ];
+
+    return json_encode($filteredUser);
+    // return $request->user();
 });
 
 Route::middleware('auth:sanctum')->get('/authenticated', function (Request $request) {
     return true;
 });
 
+Route::resource('posts', PostController::class);
