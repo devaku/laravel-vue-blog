@@ -29,10 +29,16 @@ class AuthenticatedController extends Controller
 
             // Create user's session
             $request->session()->regenerate();
-            return redirect('/dashboard');
+            return response()->json([
+                'status' => 'success',
+                'message' => "Login successful",
+            ], 200);
+
+            // return redirect('/dashboard');
         }
 
         return response()->json([
+            'status' => 'failure',
             'message' => "Bad Credentials",
         ], 401);
 
@@ -47,5 +53,7 @@ class AuthenticatedController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
+        return redirect('/');
     }
 }
