@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import axios from "axios";
 
 // Pages
-import PostPage from "../pages/posts/index.vue";
+import postPage from "../pages/posts/_id.vue";
 import DashboardPage from "../pages/dashboard/index.vue";
 import LoginPage from "../pages/dashboard/Login.vue";
 import HomePage from "../pages/index.vue";
@@ -12,7 +12,13 @@ import NotFoundPage from "../pages/utilities/404.vue";
 
 const routes = [
     { path: "/", component: HomePage, name: "home" },
-    { path: "/posts", component: PostPage },
+    {
+        path: "/posts/:id",
+        name: "details",
+        component: postPage,
+        props: true,
+    },
+
     {
         path: "/login",
         name: "login",

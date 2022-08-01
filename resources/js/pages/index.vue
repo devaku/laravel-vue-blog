@@ -59,9 +59,11 @@
         </ul>
     </div>
     <!-- Posts Content -->
-    <div class="container">
-        <postComponent :posts="posts" v-if="posts.length > 0"></postComponent>
-        <div v-else>
+    <div class="container mb-5">
+        <div class="card card-body mb-2" v-for="post in posts" :key="post.id">
+            <postComponent :post="post"></postComponent>
+        </div>
+        <div v-if="posts.length < 0">
             <h2 class="text-center">There are no posts available</h2>
         </div>
     </div>
