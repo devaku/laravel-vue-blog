@@ -6,4 +6,10 @@ import App from "./App.vue";
 
 import router from "./router/routes.js";
 
-createApp(App).use(router).mount("#app");
+import VueCookies from "vue-cookies";
+// default options config: { expires: '1d', path: '/', domain: '', secure: '', sameSite: 'Lax' }
+
+let vueApp = createApp(App);
+vueApp.use(VueCookies, { expire: "7d" });
+vueApp.use(router);
+vueApp.mount("#app");
