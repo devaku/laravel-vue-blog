@@ -2,9 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Auth\AuthenticatedController;
 use App\Http\Controllers\PostController;
-use Illuminate\Support\Facades\Log;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +15,13 @@ use Illuminate\Support\Facades\Log;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::post('login', [AuthenticatedController::class, 'login'])->name('login');
+Route::post('logout', [AuthenticatedController::class, 'logout']);
+
+
+Route::resource("posts", PostController::class);
+Route::get('getAllPosts', [PostController::class, 'showBasedOnUser']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     $filteredUser = [
@@ -30,5 +36,3 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware('auth:sanctum')->get('/authenticated', function (Request $request) {
     return true;
 });
-
-Route::resource('posts', PostController::class);
