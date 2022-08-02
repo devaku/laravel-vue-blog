@@ -33,18 +33,12 @@ class AuthenticatedController extends Controller
                 'status' => 'success',
                 'message' => "Login successful",
             ], 200);
-
-            // return redirect('/dashboard');
         }
 
         return response()->json([
             'status' => 'failure',
             'message' => "Bad Credentials",
         ], 401);
-
-        // return response([
-        //     'message' => "Bad Credentials",
-        // ], 401);
     }
 
     public function logout(Request $request){
