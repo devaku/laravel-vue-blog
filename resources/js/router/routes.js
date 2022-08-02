@@ -16,7 +16,7 @@ const routes = [
         path: "/posts/:id",
         name: "details",
         component: postPage,
-        props: true,
+        // props: true,
     },
 
     {
@@ -61,7 +61,6 @@ const routes = [
 // You can pass in additional options here, but let's
 // keep it simple for now.
 const router = createRouter({
-    // 4. Provide the history implementation to use. We are using the hash history for simplicity here.
     // linkActiveClass: "fw-bold",
     history: createWebHistory(),
     routes,
