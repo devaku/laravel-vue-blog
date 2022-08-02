@@ -19,15 +19,27 @@
                 <!-- Right side -->
                 <ul class="navbar-nav mb-2 mb-lg-0">
                     <li class="nav-item" v-if="isLoggedIn">
+                        <router-link
+                            :to="{ name: 'dashboard' }"
+                            class="nav-link"
+                        >
+                            Dashboard
+                        </router-link>
+                    </li>
+                    <li class="nav-item" v-if="isLoggedIn">
                         <a href="#" class="nav-link" v-on:click="submitForm()"
                             >Logout</a
                         >
                     </li>
+
                     <li class="nav-item" v-else>
                         <span v-if="currentRouteName !== 'login'">
-                            <router-link to="/login" exact class="nav-link"
-                                >Login</router-link
+                            <router-link
+                                :to="{ name: 'login' }"
+                                class="nav-link"
                             >
+                                Login
+                            </router-link>
                         </span>
                     </li>
                 </ul>
@@ -39,7 +51,7 @@
 export default {
     data() {
         return {
-            logoutUrl: `${process.env.MIX_APP_URL}/logout`,
+            logoutUrl: `${process.env.MIX_APP_URL}/api/logout`,
             isLoggedIn: null,
         };
     },
@@ -86,12 +98,8 @@ export default {
                 },
             })
                 .then((response) => {
-                    if (this.currentRouteName != "home") {
-                        this.$router.push({ name: "home" });
-                    } else {
-                        // Refresh the page
-                        this.$router.go();
-                    }
+                    // console.log(response.data);
+                    this.$router.push({ name: "home" });
                 })
                 .catch((e) => {
                     console.log(e);
