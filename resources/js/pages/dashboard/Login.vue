@@ -55,6 +55,9 @@ export default {
             password: null,
         };
     },
+    created() {
+        // this.$cookies.set("Z COOKIE", "Hello", 7200);
+    },
 
     methods: {
         async submitForm() {
@@ -64,7 +67,26 @@ export default {
                 password: this.password,
             };
 
-            const url = `${process.env.MIX_APP_URL}/login`;
+            // Get CSRF Cookie
+            let url = `${process.env.MIX_APP_URL}/sanctum/csrf-cookie`;
+            await axios(url, {
+                method: "get",
+                headers: {
+                    // 'Content-Type': 'multipart/form-data',
+                    Accept: "application/json",
+                },
+            })
+                .then((response) => {
+                    // console.log(response.data);
+                })
+                .catch((e) => {
+                    // console.log(JSON.stringify(e));
+                    console.log(JSON.stringify(e.response));
+                    this.formError = e.response.data.message;
+                });
+
+            // Login
+            url = `${process.env.MIX_APP_URL}/api/login`;
             const response = await axios(url, {
                 method: "post",
                 data,
@@ -73,8 +95,11 @@ export default {
                     Accept: "application/json",
                 },
             })
-                .then((response) => {
-                    this.$router.push({ name: "home" });
+                .then(async (response) => {
+                    console.log(response.data);
+                    // Refresh page
+                    this.$router.go();
+                    // this.$router.push({ name: "home" });
                 })
                 .catch((e) => {
                     // console.log(JSON.stringify(e));
