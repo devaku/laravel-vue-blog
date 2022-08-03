@@ -111,7 +111,10 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = Post::findOrFail($id);
+        if($post->delete()){
+            return new PostResource($post);
+        }
     }
 }
 

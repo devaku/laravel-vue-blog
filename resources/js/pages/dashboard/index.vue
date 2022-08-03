@@ -37,12 +37,13 @@
                                 >
                                     EDIT
                                 </router-link>
-                                <router-link
-                                    :to="{ name: 'login' }"
+                                <a
+                                    href="#"
+                                    @click="handleDelete(post.id)"
                                     class="btn btn-danger w-100 m-2"
                                 >
                                     DELETE
-                                </router-link>
+                                </a>
                             </div>
                         </td>
                     </tr>
@@ -85,6 +86,27 @@ export default {
                 });
 
             // this.posts = posts;
+        },
+
+        async handleDelete(id) {
+            const url = `${process.env.MIX_APP_URL}/api/posts/${id}`;
+            await axios({
+                url,
+                method: "delete",
+                headers: {
+                    Accept: "application/json",
+                },
+            })
+                .then((response) => {
+                    // console.log(response.data.data);
+                    alert("Successfully Deleted!");
+                    // Update the page
+                    this.getPosts();
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
+            console.log(id);
         },
     },
     components: {
