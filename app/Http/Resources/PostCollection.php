@@ -2,24 +2,24 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Support\Facades\Log;
-use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class PostResource extends JsonResource
+class PostCollection extends ResourceCollection
 {
     /**
-     * Transform the resource into an array.
+     * Transform the resource collection into an array.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     public function toArray($request)
-    {        
-        $data = parent::toArray($request);
-        $user_id = $data['user_id'];
+    {
+        $data = $this->collection;
+        $user_id = $data[0]['user_id'];
         return [
-            ...$data,
+            "data" => $data,
             "user_name" => User::findOrFail($user_id)->name,  
         ];
     }
