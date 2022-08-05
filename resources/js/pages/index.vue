@@ -1,7 +1,8 @@
 <template>
     <Navbar></Navbar>
-    <div class="posts-form container">
-        <h2>Share what's on your mind.</h2>
+
+    <div class="posts-form container" v-if="user">
+        <h2 class="text-center">Share what's on your mind.</h2>
         <form @submit.prevent="createPost" action="" class="mb-3">
             <div class="form-group mb-3">
                 <input
@@ -26,6 +27,9 @@
                 <button type="submit" class="btn btn-primary">Save</button>
             </div>
         </form>
+    </div>
+    <div class="container" v-else>
+        <h2 class="text-center">See what everyone else has been posting :D</h2>
     </div>
     <!-- Pagination -->
     <div class="container my-5">
@@ -82,13 +86,44 @@ export default {
             },
             posts: [],
             pagination: {},
+            user: null,
         };
     },
     mounted() {
         this.fetchPosts();
+        this.getLoggedIn();
     },
     components: { Navbar, postComponent },
     methods: {
+        async getLoggedIn() {
+            // Get CSRF Cookie
+            let url = `${process.env.MIX_APP_URL}/sanctum/csrf-cookie`;
+            await axios(url, {
+                method: "get",
+                headers: {
+                    // 'Content-Type': 'multipart/form-data',
+                    Accept: "application/json",
+                },
+            })
+                .then((response) => {
+                    // console.log(response.data);
+                })
+                .catch((e) => {
+                    // console.log(JSON.stringify(e));
+                    console.log(JSON.stringify(e.response));
+                });
+
+            await axios
+                .get("/api/user")
+                .then((response) => {
+                    this.user = response.data;
+                    return;
+                })
+                .catch(() => {
+                    this.user = null;
+                    return;
+                });
+        },
         async fetchPosts(pageUrl) {
             let fetchUrl = pageUrl
                 ? pageUrl
