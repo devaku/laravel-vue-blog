@@ -27,12 +27,11 @@
                         </router-link>
                     </li>
                     <li class="nav-item" v-if="isLoggedIn">
-                        <a href="#" class="nav-link" v-on:click="submitForm()"
-                            >Logout</a
-                        >
+                        <a href="#" class="nav-link" v-on:click="submitForm()">
+                            Logout
+                        </a>
                     </li>
-
-                    <li class="nav-item" v-else>
+                    <li class="nav-item" v-if="!isLoggedIn">
                         <span v-if="currentRouteName !== 'login'">
                             <router-link
                                 :to="{ name: 'login' }"
@@ -41,6 +40,14 @@
                                 Login
                             </router-link>
                         </span>
+                    </li>
+                    <li class="nav-item" v-if="!isLoggedIn">
+                        <router-link
+                            :to="{ name: 'register' }"
+                            class="nav-link"
+                        >
+                            Register
+                        </router-link>
                     </li>
                 </ul>
             </div>
@@ -98,8 +105,12 @@ export default {
                 },
             })
                 .then((response) => {
-                    // console.log(response.data);
-                    this.$router.push({ name: "home" });
+                    console.log(response.data);
+                    if (this.$route.name == "home") {
+                        this.$router.go();
+                    } else {
+                        this.$router.push({ name: "home" });
+                    }
                 })
                 .catch((e) => {
                     console.log(e);
