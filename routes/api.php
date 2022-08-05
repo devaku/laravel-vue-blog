@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +23,7 @@ Route::post('logout', [AuthenticatedController::class, 'logout']);
 
 Route::resource("posts", PostController::class);
 Route::get('getAllPosts', [PostController::class, 'showBasedOnUser']);
+Route::put('register', [RegisteredUserController::class, 'register']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     $filteredUser = [

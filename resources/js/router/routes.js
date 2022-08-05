@@ -6,6 +6,7 @@ import postPage from "../pages/posts/_id.vue";
 import addEditPage from "../pages/posts/AddEdit.vue";
 import DashboardPage from "../pages/dashboard/index.vue";
 import LoginPage from "../pages/dashboard/Login.vue";
+import RegisterPage from "../pages/dashboard/Register.vue";
 import HomePage from "../pages/index.vue";
 
 // Utilies
@@ -43,6 +44,23 @@ const routes = [
                 .get("/api/authenticated")
                 .then(() => {
                     next({ name: "home" });
+                    return;
+                })
+                .catch(() => {
+                    next();
+                    return;
+                });
+        },
+    },
+    {
+        path: "/register",
+        name: "register",
+        component: RegisterPage,
+        beforeEnter: (to, form, next) => {
+            axios
+                .get("/api/authenticated")
+                .then(() => {
+                    next({ name: "dashboard" });
                     return;
                 })
                 .catch(() => {
