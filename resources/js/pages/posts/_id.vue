@@ -9,14 +9,36 @@
                 <p>{{ post.body }}</p>
             </div>
             <!-- Footer -->
-            <div class="d-flex justify-content-between">
-                <div>
-                    <span>Author: {{ post.user_name }}</span>
+            <div class="d-flex flex-column">
+                <div class="d-flex justify-content-between">
+
+                    <div>
+                        <span>Author: {{ post.user_name }}</span>
+                    </div>
+                    <div>
+                        <span>Created at: {{ getDate }}</span>
+                    </div>
                 </div>
-                <div>
-                    <span>Created at: {{ getDate }}</span>
+                <div v-if="post.user_id == user.id">
+                    <router-link
+                        :to="{
+                            name: 'modifyPost',
+                            params: { id: post.id, method: 'edit' },
+                        }"
+                        class="d-inline-block btn btn-warning w-100"
+                    >
+                        EDIT
+                    </router-link>
+                    <a
+                        href="#"
+                        @click="handleDelete(post.id)"
+                        class="d-inline-block btn btn-danger w-100 mx-2"
+                    >
+                        DELETE
+                    </a>
                 </div>
             </div>
+
         </div>
     </div>
 </template>
@@ -27,11 +49,15 @@ import Navbar from "../../components/Navbar.vue";
 export default {
     data() {
         return {
-            post: {},
+            post: {
+                id: 0,
+            },
+            user: {},
         };
     },
     mounted() {
         const id = this.$route.params.id;
+        this.getLoggedIn();
         this.getPost(id);
     },
 
@@ -49,8 +75,24 @@ export default {
 
             return dateString;
         },
+
+        isSameUser() {
+            return this.post.user_id == this.user.user_id;
+        }
     },
     methods: {
+        async getLoggedIn() {
+            await axios
+                .get("/api/user")
+                .then((response) => {
+                    this.user = response.data;
+                    return;
+                })
+                .catch(() => {
+                    this.user = null;
+                    return;
+                });
+        },
         async getPost(id) {
             const url = `${process.env.MIX_APP_URL}/api/posts/${id}`;
             const response = await axios(url, {
@@ -74,4 +116,8 @@ export default {
     components: { Navbar },
 };
 </script>
-<style scoped></style>
+<style scoped>
+.btn {
+    max-width: 250px;
+}
+</style>
